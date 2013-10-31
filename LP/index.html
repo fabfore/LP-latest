@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="en" style="height:100%;width:100%;background:#000;">
+  <head>
+    <meta charset="utf-8">
+    <meta name="generator" content="CoffeeCup HTML Editor (www.coffeecup.com)">
+    <meta name="dcterms.created" content="Fri, 01 Jun 2012 12:55:09 GMT">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <title>LP</title>
+  	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+  	<script type="text/javascript" src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  	<script src="/socket.io/socket.io.js"></script> 
+  </head>
+  <body style="height:100%;width:100%;margin:0px;background-color:#000;">
+  <style>
+      .framebody {
+        overflow: auto;
+        width: 100%;
+        height: 90%;
+		margin:0px;
+		color:white;
+      }
+	  .tab {
+        overflow: auto;
+        width: 100%;
+        height: 90%;
+		color:white;
+		margin:0px;
+      }
+	  .button{
+	    width:10%;
+		margin-left:-4px;
+		padding:0;
+	   }
+       table{
+          table-layout:fixed;
+       }
+
+      h1, h2, h3, h4, h5, h6{
+      	font-weight:normal;
+      	margin:0;
+      	line-height:1.1em;
+      	color:#000;
+      	}	
+      h1{font-size:2em;margin-bottom:.5em;}	
+      h2{font-size:1.75em;margin-bottom:.5142em;padding-top:.2em;}	
+      h3{font-size:1.5em;margin-bottom:.7em;padding-top:.3em;}
+      h4{font-size:1.25em;margin-bottom:.6em;}
+      h5,h6{font-size:1em;margin-bottom:.5em;font-weight:bold;}
+      
+      a, a:visited{
+      	text-decoration:none;
+      	color:#06C;
+      	}
+      a:hover{color:#999;}
+      
+      header, nav, article, section, footer, address {display:block;}
+      	
+      header{
+      	height:32px;
+      	overflow:hidden;
+      	background:#e1e1e1;
+      	background:-webkit-gradient(linear, left top, left bottom, from(#d1d1d1), to(#e1e1e1));
+      	background:-moz-linear-gradient(top,  #d1d1d1,  #e1e1e1);
+      	padding:0 5px;
+      	}
+      header h1{
+      	line-height:32px;
+      	font-size:14px;
+      	text-shadow:#fff 0 1px 0;
+      	text-align:center;
+      	}
+      
+      nav{
+	  	bottom:0;
+      	height:28px;
+		width:100%;
+		position:absolute;
+      	overflow:hidden;
+      	}
+      nav ul{
+      	margin:0;
+      	padding:0 5px;
+      	width:100%;
+      	height:100%;
+      	-moz-box-shadow:inset 0 2px 2px #999;
+      	-webkit-box-shadow:inset 0 2px 2px #999;
+      	box-shadow:inset 0 2px 2px #999;
+      	background:#bbb;
+      	}
+      nav li{
+      	list-style:none;
+      	float:left;
+      	height:100%;
+      	line-height:24px;
+      	-moz-box-shadow:0 0 3px #888;
+      	-webkit-box-shadow:0 0 3px #888;
+      	box-shadow:0 0 3px #888;
+      	-webkit-border-bottom-right-radius:3px;
+      	-webkit-border-bottom-left-radius:3px;
+      	-moz-border-radius-bottomright:3px;
+      	-moz-border-radius-bottomleft:3px;
+      	border-bottom-right-radius:3px;
+      	border-bottom-left-radius:3px;
+      	margin:0 2px;
+      	width:30%;
+      	overflow:hidden;
+      	position:relative;
+      	background:#ccc;
+      	background:-webkit-gradient(linear, left top, left bottom, from(#ccc), to(#aaa));
+      	background:-moz-linear-gradient(top,  #ccc,  #aaa);
+      	}
+      nav li a, nav li a:visited, nav li a:hover{
+      	list-style:none;
+      	display:block;
+      	position:absolute;
+		top:0;
+      	left:-2px;
+      	height:24px;
+      	line-height:24px;
+      	width:100%;	
+      	text-align:center;
+      	color:#333;	
+      	font-size:11px;
+      	text-shadow:#e8e8e8 0 1px 0;
+      	-moz-box-shadow:inset 0 1px 1px #888;
+      	-webkit-box-shadow:inset 0 1px 1px #888;
+      	box-shadow:inset 0 1px 1px #888;
+      	}	
+      nav li.selected{
+      	background:#e1e1e1;
+      	background:-webkit-gradient(linear, left top, left bottom, from(#e1e1e1), to(#d1d1d1));
+      	background:-moz-linear-gradient(top,  #e1e1e1,  #d1d1d1);
+      	}
+      nav li.selected a{
+      	-moz-box-shadow:none;
+      	-webkit-box-shadow:none;
+      	box-shadow:none;	
+      	}	
+      nav li a:focus{outline:none;}
+      
+      section{
+		background-color:black;
+      	//padding:1%;
+		width:98%;
+		position:absolute;
+		bottom:28px;
+		top:0px;
+      	}
+		
+	  
+        .tip{
+        	position:absolute;
+        	background:#475ab2;
+        	width:470px;
+        	height:100px;
+        	margin-top:-129px;
+        	overflow:hidden;
+        	padding:5px 15px;
+        	-moz-border-radius:5px;
+        	border-radius:5px;
+        	-moz-box-shadow:0 4px rgba(0,0,0,0.3),inset 0 -3px #425094,inset 0 0 8px #5b91e2;
+        	-webkit-box-shadow:0 4px rgba(0,0,0,0.3),inset 0 -3px #425094,inset 0 0 8px #5b91e2;
+        	box-shadow:0 4px rgba(0,0,0,0.3),inset 0 -3px #425094,inset 0 0 8px #5b91e2;
+        	background:-moz-linear-gradient(bottom,#4352ac,#6a9de3 135%);
+        	background:-o-linear-gradient(bottom,#4352ac,#6a9de3 135%);
+        	background:-webkit-linear-gradient(bottom,#4352ac,#6a9de3 135%);
+        	background:-webkit-gradient(linear,left bottom,left top,from(#4352ac),to(#6a9de3));
+        	z-index:1
+        }
+        
+        .tip h1,.tip p{
+        	color:white;
+        	font:Georgia,"Liberation Serif",serif;
+        	margin:0
+        }
+        
+        .tip h1{
+        	font-size:30px;
+        	line-height:38px;
+        	text-shadow:none
+        }
+        
+        .tip p{
+        	font-size:14px;
+        	line-height:18px;
+        	text-shadow:none
+        }
+
+  </style>
+  <script>
+    jQuery(function($){
+    
+    	tabs = function(options) {
+    		
+    		var defaults = {  
+    			selector: '.tabs',
+    			selectedClass: 'selected'
+    		};  
+    		
+    		if(typeof options == 'string') defaults.selector = options;
+    		var options = $.extend(defaults, options); 
+    	
+    		return $(options.selector).each(function(){
+    									
+    			var obj = this;	
+    			var targets = Array();
+    	
+    			function show(i){
+    				$.each(targets,function(index,value){
+    					$(value).hide();
+    				})
+    				$(targets[i]).fadeIn('fast');
+    				$(obj).children().removeClass(options.selectedClass);
+    				selected = $(obj).children().get(i);
+    				$(selected).addClass(options.selectedClass);
+    			};
+    	
+    			$('a',this).each(function(i){	
+    				targets.push($(this).attr('href'));
+    				$(this).click(function(e){
+    					e.preventDefault();
+    					show(i);
+    				});
+    			});
+    			
+    			show(0);
+    	
+    		});			
+    	}
+    	// initialize the function
+    	// as a parameter we are sending a selector. For this particular script we must select the unordered (or ordered) list item element 
+    	tabs('nav ul');
+    
+    });
+	
+	// make a message buffer in case things get congested
+	var buffer = [];
+	var noOfPlayers=0;
+	var name="";
+	var prevBox;
+	var prevBidCt=0;
+	var prevBid=0;
+	
+	var hands = new Object();
+	hands.A = "Alaska";
+	hands.B = "Bolivia";
+	hands.C = "Canada";
+	hands.D = "Denver";
+	hands.E = "England";
+	hands.F = "France";
+	hands.G = "Germany";
+	hands.H = "Havana";
+	hands.I = "Idaho";
+	hands.J = "Jamaica";
+	hands.K = "Kansas";
+	hands.L = "London";
+	hands.M = "Maryland";
+	hands.N = "Nebraska";
+	hands.O = "Ohio";
+	hands.P = "Peru";
+	hands.Q = "Quebec";
+	hands.R = "Rome";
+	hands.S = "Switzerland";
+	hands.T = "Tanzania";
+	hands.U = "Uganda";
+	hands.V = "Venice";
+	hands.W = "Washington";
+	hands.X = "Xenia";
+	hands.Y = "Yemen";
+	hands.Z = "Zambia";
+
+	var nth = new Object();
+	nth.One = "Single" ;
+	nth.Two = "Double";
+	nth.Three = "Triple";
+	nth.Four = "Quad";
+	nth.Five = "Pentagon";
+	nth.Six = "Hexagon";
+	nth.Seven = "Heptagon"; 
+	nth.Eight = "Octal";
+	
+	
+	// make a connection to the server
+	var socket = io.connect('http://10.158.144.121:8888',{connectTimeout:3000000000000});
+	
+	socket.on('connect', function(){
+		//console.log("You are now connected into the game");
+		$("input#Bid").attr('disabled', false);
+		//console.log("Enter Name enabled");
+		$("input#bt").attr('disabled', false);
+	});
+ 
+	socket.on('connect_failed', function(){
+		  alert('The connection to the server failed.');
+	});
+ 
+	socket.on('message', function(message){
+	  // when the client gets a message from the server, 
+	  // add it to the buffer and display the message
+	  //console.log("Received message from server : "+message.message);
+	  buffer.push(message);
+	  if(buffer.length > 15)
+		  buffer.shift();
+	
+	  //console.log("#### "+message.message.toString().trim().split(" ").length);
+	  if($.trim(message.message.toString()).split(" ").length != 3)
+	  {
+	  	  appendMessage(message.message);
+	  }
+	  else
+	  {
+    	  //console.log("Bid: "+bid);	
+    	  $("#userbid"+bid).text(message.message);
+		  var bidString = message.message.toString().split(" ")
+		  prevBidCt = parseInt(bidString[1]);
+		  prevBid = parseInt(bidString[2]);
+		  if(prevBid == 0)
+			prevBid = 10;
+		  //console.log("prevBidCt: "+prevBidCt+", prevBid: "+prevBid);
+	  }
+	});
+ 
+	socket.on('disconnect', function(client){ 
+		//console.log("Received disconnect from server");
+		socket.disconnect();
+		appendMessage("Disconnected");
+	  // on disconnect, broadcast it to the server
+	  //client.broadcast({ announcement: client.sessionId + ' disconnected' });
+	});
+	
+		socket.on('updateFriends', function(message){ 
+		if($('#online-friends' + ':contains("'+message.message+'")').length == 0 ){
+			noOfPlayers++;
+			//console.log("New player : "+message.message+". No of Players : "+noOfPlayers);
+			$('#online-friends').append('<li id=player:'+message.message+'>'+message.message+'</li>'); 
+			
+			var tblHeadObj = document.getElementById("tblScore").tHead;
+			for (var h=0; h<tblHeadObj.rows.length; h++) {
+				var newTH = document.createElement('th');
+				tblHeadObj.rows[h].appendChild(newTH);
+				newTH.Id = "col:"+message.message;
+				newTH.innerHTML = message.message;
+			}
+		}
+	});
+	
+	socket.on('score', function(message){
+		var scoreMsg = message.message.split(":");
+		//console.log("Game: "+ scoreMsg[1]+", Player: "+scoreMsg[0] + ", Score: "+scoreMsg[2]);
+		//console.log(scoreMsg[1]+"col:"+scoreMsg[0]);
+		//var td = document.getElementById(scoreMsg[1]+"col:"+scoreMsg[0]);
+		//td.innerHTML = scoreMsg[2];
+		
+		var allRows = document.getElementById("tblScore").rows;
+		var tblBodyObj = document.getElementById("tblScore").tBodies[0];
+		var lastIndex = tblBodyObj.rows.length - 1;
+
+		for (var j=tblBodyObj.rows[lastIndex].cells.length-1; j > -1; j--) {
+			if (allRows[0].cells[j].Id == "col:"+scoreMsg[0]) {
+				tblBodyObj.rows[lastIndex].cells[j].innerHTML = scoreMsg[2];
+			}
+		}
+
+	});
+	
+	socket.on('incomingMultiple',function(message){
+		//console.log("incomingMultiple : "+message.message);
+		var incomingMultiple = document.getElementById("incomingMultiple");
+		incomingMultiple.innerHTML = "Incoming Multiple: "+message.message;
+	});
+	
+	socket.on('bidMultiple',function(message){
+		//console.log("bidMultiple : "+message.message);
+		var bidMultiple = document.getElementById("bidMultiple");
+		bidMultiple.innerHTML = "Bid Multiple: "+message.message;
+	});
+	
+	var bid=0;
+	var milisec=0;
+	var seconds=0;
+	var minutes=0;
+	var hours=0;
+	var days=0;
+	var game=0;
+	var interval;
+	
+	socket.on('begin', function(message){
+	    window.clearInterval(interval);
+		milisec=0;
+    	seconds=0;
+    	minutes=0;
+    	hours=0;
+    	days=0;
+		bid++;
+		//console.log("Bid: "+bid);
+		$("#turn-log").prepend(
+		"<div style=\"float:left;width:50%;\" id=\"userbid"+bid+"\">"+message.message+ ":</div>"+
+		"<div id=\"timer\" style=\"float:right;width:50%\"></div></br>");
+    	var start = new Date().getTime(); 
+        interval = window.setInterval(function()  
+        {  
+		   if (milisec>=9){
+              milisec=0;
+              seconds+=1;
+           }
+           else
+               milisec+=1;
+		   if(seconds >= 60){
+		   	  seconds=0;
+			  minutes+=1;
+		   }	   
+		   if(minutes>=60){
+		   	  minutes=0;
+			  hours+=1;
+		   }
+		   if(hours>=24){
+		   	  hours=0;
+			  days+=1;
+		   }
+		   
+		   $("#timer").text("..... "
+			+ (days > 0? days +" Days " : "")
+			+ (hours > 0||days > 0? hours+" Hours ": "")
+			+ (minutes > 0 ||hours>0||days > 0? minutes +" Mins ": "")
+			+ seconds+ " s "); 
+		/*
+            var time = new Date().getTime() - start;
+			var timeObj = new Object();
+            timeObj.days = Math.floor(time/1000/60/60/24);
+            time -= timeObj.days*1000*60*60*24;
+            timeObj.hours = Math.floor(time /1000/60/60);
+            time -= timeObj.hours*1000*60*60;
+           	timeObj.minutes = Math.floor(time /1000/60);
+          	time -= timeObj.minutes*1000*60;
+           	timeObj.seconds = Math.floor(time /1000); 
+
+            $("#timer").text("..... "
+			+ (timeObj.days > 0? timeObj.days +" Days " : "")
+			+ (timeObj.hours > 0 ? timeObj.hours+" Hours ": "")
+			+ (timeObj.minutes > 0? timeObj.minutes +" Mins ": "")
+			+ timeObj.seconds+ " s "); 
+			*/
+        }, 100);  
+		
+		if(message.message === name){
+			//console.log("Your turn");
+			$("#userbid"+bid).text("You:");
+			$("input#Bid").attr('disabled', false);
+			$("input#bt").attr('disabled', false);
+			$("input#challenge").attr('disabled', false);
+			//flashToolbar();
+			//$("input#count").attr('disabled', false);
+		}
+		else
+		{
+			$("input#Bid").attr('disabled', true);
+			$("input#bt").attr('disabled', true);
+			$("input#challenge").attr('disabled', true);
+		}
+		//appendMessage("Begin Game");
+		//appendMessage("Player 1: "+message.message);
+	});
+	
+	socket.on('play', function(message){ 
+	
+		var letter = message.message.toString().substring(0,1);
+		var multiple = parseInt(incomingMultiple.innerHTML.replace("Incoming Multiple: ",""));
+		var multiplier;
+		if(multiple >  0 && multiple < 9)
+			multiplier = nth[DigitsToWords(multiple)];
+		else
+			multiplier = DigitsToWords(multiple) + "-ski";
+		
+		if(game == 10)
+			appendMessage("Last hand is "+letter+" - "+hands[letter] + " for a "+ multiplier);
+		else
+			appendMessage("Next hand is "+letter+" - "+hands[letter] + " for a "+ multiplier);
+		
+		//console.log("Your turn : "+$("#"+message.message).text());
+		$("#"+prevBox).css("background-color", "gray");
+		$("#"+message.message).css("background-color", "red");
+		
+		//console.log("Row: "+message.message.toString().substring(0,1));
+		$("#Row1,#Row2").text(letter);
+		
+		//console.log("Sequence: "+$("#"+message.message).text());
+		$("#Sequence").text($("#"+message.message).text());
+		
+		socket.emit('register',{seq: $("#"+message.message).text()});
+		prevBox = message.message;
+		//appendMessage("Box 1: "+message.message);
+	});
+	
+	socket.on('newgame', function(message){ 
+		//console.log("New game");
+		//$("#"+message.message).css("background-color", "red");
+		appendMessage("==================================");
+		appendMessage("Beginning Game "+message.message);
+		game = message.message;
+		var allRows = document.getElementById("tblScore").rows;
+		var tblBodyObj = document.getElementById("tblScore").tBodies[0];
+		tblBodyObj.insertRow(tblBodyObj.rows.length);
+		for (var i=0; i< noOfPlayers; i++) {
+			var newCell = tblBodyObj.rows[tblBodyObj.rows.length - 1].insertCell(i);
+			newCell.Id = message.message + allRows[0].cells[i].Id;
+			//console.log("Cell Id: "+newCell.Id);
+			newCell.innerHTML = '0';
+		}
+		
+		prevBidCt=0;
+		prevBid=0;
+	});
+	
+	socket.on('challenge1', function(message){ 
+		if(name == message.message)
+		{
+			//console.log("You have been challenged by everyone. You can either select count or raise the bet");
+			//appendMessage("You have been challenged by everyone. You can either select count or raise the bet");
+			appendMessage("Challenged around, count or raise, bid is at "+prevBidCt+" "+ prevBid+"'s");
+			$("input#count").attr('disabled', false);
+			$("input#count").css("background-color", "red");
+			$("input#challenge").attr('disabled', true);
+			//appendMessage("Box 1: "+message.message);
+		}
+	});
+ 
+	socket.on('challenge2', function(message){ 
+		if(name == message.message)
+		{
+			//console.log("You have been challenged by everyone twice. This round is now over.");
+			//appendMessage("You have been challenged by everyone twice. This round is now over.");
+			appendMessage("Challenged around twice.");
+			sendMessage('Ct');
+			$("input#count").attr('disabled', true);
+			$("input#count").css("background-color", "none");
+			$("input#challenge").attr('disabled', true);
+			$("input#Bid").attr('disabled', true);
+
+			$("input#bt").attr('disabled', true);
+			//appendMessage("Box 1: "+message.message);
+		}
+	});
+	
+ 	socket.on('removeFriends', function(message){ 
+		appendMessage(message.message + " has left the conversation");
+			$("#player:"+message.message).remove();
+			deleteColumn(message.message);
+	});
+	
+	socket.on('chat',function(message){
+		appendChatMessage(message.message);
+	});
+	
+	function deleteColumn(player)
+	{
+		var allRows = document.getElementById("tblScore").rows;
+		var tblBodyObj = document.getElementById("tblScore").tBodies[0];
+		for (var i=0; i<tblBodyObj.rows.length; i++) 
+		{
+			for (var j=tblBodyObj.rows[i].cells.length-1; j > -1; j--) {
+				if (allRows[0].cells[j].Id == "col:"+player ) {
+					tblBodyObj.rows[i].deleteCell(j);
+				}
+			}
+		}
+		
+		for (var i=0; i<allRows.length; i++) {
+			for (var j=allRows[i].cells.length-1; j > -1; j--) {
+				//console.log("Check Col: "+allRows[0].cells[j].Id);
+				if (allRows[0].cells[j].Id == "col:"+player ) {
+					allRows[i].deleteCell(j);
+				}
+			}
+		}
+		
+	}
+	
+	socket.on('successfulLogin', function(message){
+		appendMessage('Logged in: ' + message.message); // show the message
+		$("input#Bid").val('Bid');
+		$("input#Bid").attr('disabled', true);
+		//console.log("Enter Name disabled");
+		$("input#bt").attr('disabled', true);
+		$("#welcome").remove();
+		document.getElementById('inputbuttons').style.display= "";
+		$("#form").append(
+		'<table style="width:100%" id="fixed-input" >'+
+			'<tr style="width:100%">'+
+				'<td style="width:50%">'+
+					'<input type="submit" style="width:100%" class="button" name="challenge" id="challenge" value="Challenge" disabled="disabled" onclick="sendMessage(\'Ch\');"/>'+
+				'</td>'+
+				'<td style="width:50%">'+
+					'<input type="submit" style="width:100%" class="button" name="count" id="count" value="Count" disabled="disabled" onclick="sendMessage(\'Ct\');"/>'+
+				'</td>'+	
+			'</tr>'+	
+		'</table>'+
+		'<br/><br/>');
+		var randomnumber = "";
+		var upr = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+		var data ="";
+		data = data + '<table border="1" cellpadding="2" style="height:100%; width:100%;" bordercolor="White">'+
+			'<col style="width: 20px;"/>'+
+            '<col style="width: 70px;"/>'+
+            '<col style="width: 20px;"/>'+
+			'<col style="width: 20px;"/>'+
+            '<col style="width: 70px;"/>'+
+            '<col style="width: 20px;"/>'+
+			'<col style="width: 20px;"/>'+
+            '<col style="width: 70px;"/>'+
+            '<col style="width: 20px;"/>'+
+			'<col style="width: 20px;"/>'+
+            '<col style="width: 70px;"/>'+
+            '<col style="width: 20px;"/>'+
+			'<col style="width: 20px;"/>'+
+            '<col style="width: 70px;"/>'+
+            '<col style="width: 20px;"/>'+
+			'<tr>'+
+			'<td style="text-align:center;" colspan="3">Column 1</td>'+
+			'<td style="text-align:center;" colspan="3">Column 2</td>'+
+			'<td style="text-align:center;" colspan="3">Column 3</td>'+
+			'<td style="text-align:center;" colspan="3">Column 4</td>'+
+			'<td style="text-align:center;" colspan="3">Column 5</td>'+
+			'</tr>';
+		for(var j=0; j<15; j++)
+		{
+			data = data + '<tr>';
+			for(var i = 0; i < 5; i++)
+			{
+				data = data + '<td  style="width:20px;" id="'+upr.charAt(j)+'"><font color="Gray">'+upr.charAt(j) +'</font></td>';
+				randomnumber = "";
+				for(var c=0; c<8;c++)
+				{
+					randomnumber += Math.floor(Math.random()*10).toString();
+				}
+				data = data + '<td style="width:auto;" id="'+upr.charAt(j)+(i+1)+'">'+randomnumber +'</td>';
+				data = data + '<td style="width:20px;" id="'+upr.charAt(j)+'"><font color="Gray">'+upr.charAt(j) +'</font></td>';
+			}
+			data = data + '</tr>';
+		}
+		data = data + '</table>';
+		$('div#Slip').append(data);
+		//console.log("Slip populated");
+	});
+	
+	function closeMessage(message){
+		sendMessage("remove");
+	}
+	
+	function isValidEntry(entry){
+		if(entry.toString() === "Ch" || entry.toString() === "Ct")
+			return true;
+		var entryParts = $.trim(entry.toString()).split(" ");
+		if(entryParts.length != 2)
+		{
+		 	alert("Invalid Bid: Bid has to be of the form <Bid Count> <Bid Digit>. Eg: 4 6");
+			return false;
+		}
+		var bidCt = parseInt(entryParts[0]);
+		var bid = parseInt(entryParts[1]);
+		if(parseInt(bid) == 0)
+			bid = 10;
+		//console.log("BidCt: " + bidCt+", prevBidCt: "+prevBidCt+", Bid: "+bid+", PrevBid: "+prevBid);
+		if(parseInt(bidCt) < parseInt(prevBidCt))
+		{
+		 	alert("Invalid Bid: Bid Count cannot be less than previous bid count");
+			return false;
+		}
+		else if(parseInt(bidCt) == parseInt(prevBidCt))
+		{
+		 	 if(parseInt(bid) < parseInt(prevBid))
+			 {
+			  	alert("Invalid Bid: Bid cannot be less than previous bid for the same count");
+				return false;
+			 }
+			 else if(parseInt(bid) == parseInt(prevBid))
+			 {
+			  	alert("Invalid Bid: Bid same as Prev Bid. Please increase the bid or Challenge.");
+				return false;
+			 }
+		}
+		prevBidCt = parseInt(bidCt);
+		prevBid = parseInt(bid);
+		return true;
+	}
+	
+    // send a message to the server
+    function sendMessage(message){
+  	  if(!message){
+        // get the message from the input field
+  	  	var msg = $("input#BidInput").val(); 
+  	  	$("input#BidInput").val('');
+  	  } else {
+  		var msg = message; 
+  	  }
+	  //console.log("(input#Bid).val() = "+msg);
+  	  if(msg.length > 0){ // stop annoying empty messages
+		if($("input#Bid").val() === "Enter Name" && msg !== "remove"){
+			name = msg;
+			if(socket.emit('name',{name:msg})) // send the message
+			{
+			}
+		}
+		else{
+			if(isValidEntry(msg)){
+    			if(socket.emit('message',{message:msg})){ // send the message
+    				//appendMessage('You: ' + msg); // show the message
+    				$("#userbid"+bid).text("You: "+msg);
+    				$("input#Bid").attr('disabled', true);	
+    				$("input#challenge").attr('disabled', true);
+    				$("input#bt").attr('disabled', true);
+    				//$("input#count").attr('disabled', true);
+    			}   
+			} 
+		}
+  	  }
+	  $("input#count").css("background-color", "transparent");
+	  $("input#count").attr('disabled', true);
+    }
+ 
+    // show the message on the screen
+    function appendMessage(message){
+		var align = "Left";
+		var color = "#Black";
+		var padding = "0";
+		if(message.indexOf("You: ")!= -1){
+			align="Right";
+			color="Gray";
+			padding = "10";
+		}
+		$('div#turn-log').prepend(message+'<br/>'); 
+		//scrollToBottom("turn-log");
+    }
+	
+	    // show the message on the screen
+    function appendChatMessage(message){
+		var align = "Left";
+		var color = "#Black";
+		var padding = "0";
+		if(message.indexOf("You: ")!= -1){
+			align="Right";
+			color="Gray";
+			padding = "10";
+		}
+		$('div#chat-log').prepend(message+'<br/>'); 
+		//scrollToBottom("turn-log");
+    }
+	
+	// send a message to the server
+    function sendChatMessage(message){
+  	  if(!message){
+        // get the message from the input field
+  	  	var msg = $("input#ChatInput").val(); 
+  	  	$("input#ChatInput").val('');
+  	  } else {
+  		var msg = message; 
+  	  }
+  	  if(msg.length > 0){ // stop annoying empty messages
+		if(socket.emit('chat',{message:msg})){ // send the message
+			$('div#chat-log').prepend("You: "+msg+'<br/>');
+		}   
+  	  }
+    }
+	
+	function appendToInput(input){
+		var msg = $("input#BidInput").val(); 
+		$('input#BidInput').val(msg+input+" "); 
+    }
+	
+	function scrollToBottom(elm_id)
+	{
+	var elm = document.getElementById(elm_id);
+	try
+		{
+		elm.scrollTop = elm.scrollHeight;
+		}
+	catch(e)
+		{
+		var f = document.createElement("input");
+		if (f.setAttribute) f.setAttribute("type","text")
+		if (elm.appendChild) elm.appendChild(f);
+		f.style.width = "0px";
+		f.style.height = "0px";
+		if (f.focus) f.focus();
+		if (elm.removeChild) elm.removeChild(f);
+		}
+	}
+	
+	var SingleDigits = new Array("Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve", 			"Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen");
+	var DoubleDigits = new Array("Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety");
+	
+	function DigitsToWords(Digits)
+	{
+			var Words = "";
+			var St;
+			if (Digits > 999)
+			{
+					return "The number exceeds 999.";
+			}
+			if (Digits == 0)
+			{
+					return SingleDigits[0];
+			}
+			for (var i = 9; i >= 1; i--)
+			{
+					if (Digits >= i * 100)
+					{
+							Words += SingleDigits[i];
+							St = 1;
+							Words += " hundred";
+							if (Digits != i * 100) Words += " and ";
+							{
+									Digits -= i*100;
+							}
+							i=0;
+					}
+			}
+		   
+			for (var i = 9; i >= 2; i--)
+			{
+					if (Digits >= i * 10)
+					{
+							Words += (St?DoubleDigits[i-2].toLowerCase():DoubleDigits[i-2]);
+							St = 1;
+							if (Digits != i * 10) Words += "-";
+							{
+									Digits -= i*10;
+							}
+							i=0;
+					}
+			}
+		   
+			for (var i = 1; i < 20; i++)
+			{
+					if (Digits == i)
+					{
+							Words += (St?SingleDigits[i].toLowerCase():SingleDigits[i]);
+					}
+			}
+			return Words;
+	}
+
+  </script>
+      <div class="framebody">
+		  <section class="tab" id="Game">
+              <div id="HandInfo" style="height:10%;background-color:Black;font-weight:bold;color:Red;">
+			  	   <div style="width:10%;float:left;left:0;text-align:center;" id="Row1"></div>
+			  	   <div style="width:30%;float:left;left:10%;text-align:center;" id="Sequence"></div>
+				   <div style="width:10%;float:left;left:40%;text-align:center;" id="Row2"></div>
+			       <div style="width:30%;float:left;left:50%;margin-left:20%; text-align:center;" id="incomingMultiple"></div>
+    		  </div>		  
+              <div id="turn-log" style="height:20%;width:100%;background-color:Gray;float:left;overflow:auto;">
+    		  </div>
+              <form id="Form" method="post" action="" onsubmit="return false;" 
+			  		style="height:35%;width:100%;background-color:Black;float:left;clear:both;">
+        		  <table style="width:100%;height:40%;" border="0">
+            		  <tr>
+                		  <td style="width:65%;">
+                		   	  <input type="submit" style="width:100%" class="button" name="challenge" id="challenge" value="Challenge" disabled="disabled" onclick="sendMessage('Ch');"/>
+                		  </td>
+                		  <td style="width:35%;margin-left:-2px;">
+                		  	  <input type="submit" style="width:100%" class="button" name="count" id="count" value="Count" disabled="disabled" onclick="sendMessage('Ct');"/>
+                		  </td>
+            		  </tr>
+            		  <tr>
+                		  <td style="width:65%;">
+                		   	  <input type="text" id="BidInput" style="width:100%;border:1px Solid Black;"
+							  onkeydown="if (event.keyCode == 13) document.getElementById('Bid').click()">
+							  </input>
+                		  </td>
+						  <td style="width:35%;margin-left:-2px;">
+                		  	  <input type="submit" id="Bid" style="width:100%;" value="Enter Name" 
+							  onclick="sendMessage();"/>
+                		  </td>
+            		  </tr>			  
+        		  </table>
+        		  <table style="width:100%;height:40%;" border="0">	
+				  	<tbody id="inputbuttons" style="display:none">  
+        			  <tr>
+        				  <td style="width:100%;">
+        					  <input type="submit" class="button" id="bt" name="1" value="1" onclick="appendToInput('1');" />
+        					  <input type="submit" class="button" id="bt" name="2" value="2" onclick="appendToInput('2');" />
+        					  <input type="submit" class="button" id="bt" name="3" value="3" onclick="appendToInput('3');" />
+        					  <input type="submit" class="button" id="bt" name="4" value="4" onclick="appendToInput('4');" />
+        					  <input type="submit" class="button" id="bt" name="5" value="5" onclick="appendToInput('5');" />
+        					  <input type="submit" class="button" id="bt" name="6" value="6" onclick="appendToInput('6');" />
+        					  <input type="submit" class="button" id="bt" name="7" value="7" onclick="appendToInput('7');" />
+        					  <input type="submit" class="button" id="bt" name="8" value="8" onclick="appendToInput('8');" />
+        					  <input type="submit" class="button" id="bt" name="9" value="9" onclick="appendToInput('9');" />
+        				  	  <input type="submit" class="button" id="bt" name="0" value="0" onclick="appendToInput('0');" />
+        				</td>
+        			   </tr>
+					 </tbody>
+        		  </table>
+        		  <table style="width:100%;height:20%;" border="0">
+        			  <tr>
+                		  <!--td style="width:65%;">
+        				  	  <label>Slip</label>
+                		   	  <button id="Slip+" style="width:40%;">+</button>
+                		   	  <button id="Slip-" style="width:40%;">-</button>					  
+                		  </td-->
+                		  <td id="bidMultiple" style="width:35%;text-align:center;"></td>
+            		  </tr>
+        		  </table>
+    		  </form>
+			  <div id="chat-log" style="height:25%;width:100%;background-color:Gray;float:left;overflow:auto;">
+    		  </div>
+			  <div id="chat-input" style="height:10%;width:100%;background-color:White;float:left;overflow:auto;">
+			   <table style="width:100%;height:100%;" border="0">
+				<tr>
+					 <td style="width:65%;">
+						<input type="text" id="ChatInput" style="border:1px Solid Black;width:100%;"
+								  onkeydown="if (event.keyCode == 13) document.getElementById('Chat').click()">
+						</input>
+					 </td>
+					 <td style="width:35%;">
+						<input type="submit" id="Chat" style="width:100%;" value="Enter Message" 
+									onclick="sendChatMessage();"/>
+					 </td>
+				 </tr>
+				 </table>
+    		  </div>
+          </section>
+          
+          <section class="tab" id="Slips">
+          <div id="Slip" style="width:100%;height:90%;"></p>
+          </section>
+          
+          <section class="tab" id="Sheet">
+              <div id="score" style="width:100%;height:90%;">
+        			<table id="tblScore" border="1">
+        				<thead>
+        					<tr>
+        					</tr>
+        				</thead>
+        				<tbody>
+        					<tr>
+        					</tr>
+        				</tbody>
+        			</table>
+    			</div>
+				<div id="online-friends" style="display:none;width:0;height:0;"></div>
+          </section>
+		  
+		  <nav> 
+            <ul>
+                <li><a href="#Game">GAME</a></li>
+                <li><a href="#Slips">SLIP</a></li>
+                <li><a href="#Sheet">SHEET</a></li> 
+            </ul>
+		  </nav>
+      </div>
+  </body>
+</html>
